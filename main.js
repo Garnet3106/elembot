@@ -1,26 +1,32 @@
 const Discord = require('discord.js');
 const dotenv = require('dotenv').config();
+const Module = require('./modules/module.js').Module;
 
 
 
-class BOT {
-    constructor(token) {
-        this.token = token;
-        this.client = new Discord.Client();
+class BOT extends Module {
+    final() {
+        this.log('Event', 'Finalized the module.');
     }
 
-    launch() {
+    init() {
+        this.log('Event', 'Started initializing the module.');
+
+        this.token = process.env.ELEMBOT_DISCORD_TOKEN;
+        this.client = new Discord.Client();
+
         this.client.login(this.token)
             .then(() => {
-                console.log('ログインが完了しました。');
+                this.log('Event', 'Succeeded to login.');
             })
-            .catch((e) => {
-                console.log('ログインできませんでした。');
+            .catch((exep) => {
+                this.log('Event', 'Failed to login.');
             });
+
+        this.log('Event', 'Initialized the module.');
     }
 }
 
 
 
-var bot = new BOT(process.env.ELEMBOT_DISCORD_TOKEN);
-bot.launch();
+var bot = new BOT();
