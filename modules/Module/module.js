@@ -18,9 +18,7 @@ exports.MainClass = class Module {
         return fs.readdirSync('./modules/');
     }
 
-    init() {
-        this.log('Event', 'Initialized the module.');
-    }
+    init() {}
 
     launchBOT() {
         this.loadModules();
@@ -36,10 +34,12 @@ exports.MainClass = class Module {
             if(name == this.moduleName)
                 return;
 
-            this.modules[name] = new mod.MainClass();
+            let obj = new mod.MainClass();
+            obj.log('Event', 'Initialized the module.');
+            this.modules[name] = obj;
         });
 
-        this.log('Event', 'Loaded all modules.')
+        this.log('Event', 'Completed loading all modules.')
     }
 
     log(type, message) {

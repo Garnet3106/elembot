@@ -21,7 +21,5 @@ exports.MainClass = class BOT extends Module {
             .catch((exep) => {
                 this.log('Event', 'Failed to login.');
             });
-
-        this.log('Event', 'Initialized the module.');
     }
 }

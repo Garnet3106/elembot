@@ -11,8 +11,6 @@ exports.MainClass = class Settings extends Module {
 
     init() {
         this.load();
-
-        this.log('Event', 'Initialized the module.');
     }
 
     load() {
