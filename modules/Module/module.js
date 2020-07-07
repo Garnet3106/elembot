@@ -1,13 +1,22 @@
 const fs = require('fs');
 
-const Module = require('../Module/module.js').MainClass;
-
 
 
 exports.MainClass = class Module {
     constructor() {
         this.moduleName = this.constructor.name;
         this.init();
+    }
+
+    fillSpaces(text, sumLen) {
+        let leftSideLen = Math.floor((sumLen - text.length) / 2);
+        let rightSideLen = sumLen - text.length - leftSideLen;
+
+        if(leftSideLen <= 0 || rightSideLen <= 0) {
+            return ' ' + text + ' ';
+        } else {
+            return ' '.repeat(leftSideLen) + text + ' '.repeat(rightSideLen);
+        }
     }
 
     final() {}
@@ -42,16 +51,10 @@ exports.MainClass = class Module {
     }
 
     log(type, message) {
-        let typeSpaces = ' ';
-        let nameSpaces = ' ';
+        let typeWithSpaces = this.fillSpaces(type, 10);
+        let modNameWithSpaces = this.fillSpaces(this.moduleName, 15);
 
-        while(typeSpaces.length + type.length < 10)
-            typeSpaces += ' ';
-
-        while(nameSpaces.length + this.moduleName.length < 15)
-            nameSpaces += ' ';
-
-        console.log(type + typeSpaces + '| ' + this.moduleName + nameSpaces + '| ' + message)
+        console.log(typeWithSpaces + '|' + modNameWithSpaces + '|   ' + message)
     }
 
     unloadModules() {
