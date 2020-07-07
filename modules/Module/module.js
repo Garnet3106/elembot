@@ -10,9 +10,7 @@ exports.MainClass = class Module {
         this.init();
     }
 
-    final() {
-        this.log('Event', 'Finalized the module.');
-    }
+    final() {}
 
     static getModuleNames() {
         return fs.readdirSync('./modules/');
@@ -40,6 +38,7 @@ exports.MainClass = class Module {
         });
 
         this.log('Event', 'Completed loading all modules.')
+        this.unloadModules();
     }
 
     log(type, message) {
@@ -53,5 +52,16 @@ exports.MainClass = class Module {
             nameSpaces += ' ';
 
         console.log(type + typeSpaces + '| ' + this.moduleName + nameSpaces + '| ' + message)
+    }
+
+    unloadModules() {
+        if(this.modules == undefined)
+            return;
+
+        Object.keys(this.modules).forEach(key => {
+            let obj = this.modules[key];
+            obj.final();
+            obj.log('Event', 'Finalized the module.');
+        });
     }
 }

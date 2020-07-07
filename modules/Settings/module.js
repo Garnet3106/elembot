@@ -5,9 +5,7 @@ const Module = require('../Module/module.js').MainClass;
 
 
 exports.MainClass = class Settings extends Module {
-    final() {
-        this.log('Event', 'Finalized the module.');
-    }
+    final() {}
 
     init() {
         this.load();

@@ -6,9 +6,7 @@ const Module = require('../Module/module.js').MainClass;
 
 
 exports.MainClass = class BOT extends Module {
-    final() {
-        this.log('Event', 'Finalized the module.');
-    }
+    final() {}
 
     init() {
         this.token = process.env.ELEMBOT_DISCORD_TOKEN;
