@@ -11,8 +11,6 @@ exports.MainClass = class BOT extends Module {
     }
 
     init() {
-        this.log('Event', 'Started initializing the module.');
-
         this.token = process.env.ELEMBOT_DISCORD_TOKEN;
         this.client = new Discord.Client();
 
