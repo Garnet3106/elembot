@@ -1,3 +1,3 @@
 const Module = new require('./modules/Module/module.js').MainClass;
 
-new Module();
+new Module().launchBOT();

@@ -19,11 +19,14 @@ exports.MainClass = class Module {
     }
 
     init() {
-        this.load();
         this.log('Event', 'Initialized the module.');
     }
 
-    load() {
+    launchBOT() {
+        this.loadModules();
+    }
+
+    loadModules() {
         this.modules = {};
         let modNames = Module.getModuleNames();
 
@@ -40,6 +43,15 @@ exports.MainClass = class Module {
     }
 
     log(type, message) {
-        console.log(type + ' | ' + this.moduleName + '\t| ' + message)
+        let typeSpaces = ' ';
+        let nameSpaces = ' ';
+
+        while(typeSpaces.length + type.length < 10)
+            typeSpaces += ' ';
+
+        while(nameSpaces.length + this.moduleName.length < 15)
+            nameSpaces += ' ';
+
+        console.log(type + typeSpaces + '| ' + this.moduleName + nameSpaces + '| ' + message)
     }
 }
