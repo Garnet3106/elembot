@@ -5,10 +5,13 @@ const Module = require('../Module/module.js').MainClass;
 
 
 exports.MainClass = class Settings extends Module {
-    final() {}
+    final() {
+        super.final();
+    }
 
     init() {
         this.load();
+        super.init();
     }
 
     load() {

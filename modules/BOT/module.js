@@ -1,7 +1,9 @@
 const Discord = require('discord.js');
 const dotenv = require('dotenv').config();
 
-const Module = require('../Module/module.js').MainClass;
+const ModulePack = require('../Module/module.js');
+const Module = ModulePack.MainClass;
+const ModuleStatus = ModulePack.ModuleStatus;
 
 
 
@@ -19,5 +21,7 @@ exports.MainClass = class BOT extends Module {
             .catch((exep) => {
                 this.log('Event', 'Failed to login.');
             });
+
+        super.init();
     }
 }

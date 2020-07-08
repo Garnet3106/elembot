@@ -1,15 +1,42 @@
 const fs = require('fs');
+const EventEmitter = require('events');
 
 
+
+const ModuleStatus = {
+    Unknown: 0,
+    Loaded: 1,
+    Inited: 2,
+    Ready: 3,
+    Finaled: 4
+};
+
+exports.ModuleStatus = ModuleStatus;
 
 exports.MainClass = class Module {
     constructor() {
         this.moduleName = this.constructor.name;
+        this.moduleStatus = ModuleStatus.Loaded;
+
+        this.events = new EventEmitter();
+
+        this.initCompleteEvent = 'initComplete';
+        this.events.on(this.initCompleteEvent, event => {
+            this.moduleStatus = ModuleStatus.Inited;
+            this.log('Event', 'Initialized the module.');
+        });
+
+        this.finalCompleteEvent = 'finalComplete';
+        this.events.on(this.initCompleteEvent, event => {
+            this.moduleStatus = ModuleStatus.Finaled;
+            this.log('Event', 'Finalized the module.');
+        });
+
         this.init();
     }
 
     fillSpaces(text, sumLen) {
-        let leftSideLen = Math.floor((sumLen - text.length) / 2);
+        let leftSideLen = Math.ceil((sumLen - text.length) / 2);
         let rightSideLen = sumLen - text.length - leftSideLen;
 
         if(leftSideLen <= 0 || rightSideLen <= 0) {
@@ -19,13 +46,17 @@ exports.MainClass = class Module {
         }
     }
 
-    final() {}
+    final() {
+        this.events.emit(this.finalCompleteEvent);
+    }
 
     static getModuleNames() {
         return fs.readdirSync('./modules/');
     }
 
-    init() {}
+    init() {
+        this.events.emit(this.initCompleteEvent);
+    }
 
     launchBOT() {
         this.loadModules();
@@ -42,7 +73,6 @@ exports.MainClass = class Module {
                 return;
 
             let obj = new mod.MainClass();
-            obj.log('Event', 'Initialized the module.');
             this.modules[name] = obj;
         });
 
@@ -53,8 +83,16 @@ exports.MainClass = class Module {
     log(type, message) {
         let typeWithSpaces = this.fillSpaces(type, 10);
         let modNameWithSpaces = this.fillSpaces(this.moduleName, 15);
+        let statusName = 'Unknown';
 
-        console.log(typeWithSpaces + '|' + modNameWithSpaces + '|   ' + message)
+        Object.keys(ModuleStatus).forEach(key => {
+            if(ModuleStatus[key] == this.moduleStatus)
+                statusName = key;
+        });
+
+        let modStatusWithSpaces = this.fillSpaces(statusName, 10);
+
+        console.log(typeWithSpaces + '|' + modNameWithSpaces + '|' + modStatusWithSpaces + '|   ' + message)
     }
 
     unloadModules() {
